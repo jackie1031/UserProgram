@@ -1,5 +1,9 @@
 package UserProgram;
 
+/* Each state object holds its state name
+ * and a list of variables, which are
+ * <variableName, variableValue> pairs.
+ */
 public class State {
 
 	private String stateName;
@@ -28,5 +32,6 @@ public class State {
     	for (int i = 0; i < arraySize; i++) {
     		this.arrayOfVariables[i].printVariable();
     	}
+    	System.out.println();
     }
 }
