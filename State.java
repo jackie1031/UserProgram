@@ -48,25 +48,28 @@ public class State {
             State destState = this.transitions.get(input);
 
             // Print CURR : DEST
-            p.print(this.stateName + "(");
-            for (int i = 0; i < arraySize; i++) {
-                p.print(this.arrayOfVariables[i].getVariableValue());
-                if (i < arraySize - 1) {
-                    p.print(",");
-                }
-            }
-            // p.print(")" + " : " + destState.getStateName() + "(");
-            for (int i = 0; i < arraySize; i++) {
-                p.print(destState.arrayOfVariables[i].getVariableValue());
-                if (i < arraySize - 1) {
-                    p.print(",");
-                }
-            }
-            p.print(")");
+            p.print(this.stateName);
+            // for (int i = 0; i < arraySize; i++) {
+            //     p.print(this.arrayOfVariables[i].getVariableValue());
+            //     if (i < arraySize - 1) {
+            //         p.print(",");
+            //     }
+            // }
+
+            p.print(" : " + destState.getStateName() + " ");
+            // for (int i = 0; i < arraySize; i++) {
+            //     p.print(destState.arrayOfVariables[i].getVariableValue());
+            //     if (i < arraySize - 1) {
+            //         p.print(",");
+            //     }
+            // }
+            // p.print(")");
             p.print(" WHEN ");
 
             // Print the transition
-            p.println("(" + input + "," + "OUTPUT" + ")" + " COST 1");
+            // TODO: add output!!!
+            // TODO: add comma at the end!!
+            p.println("(" + input + "," + "out1" + ")" + " COST 1");
         }
     }
 }
