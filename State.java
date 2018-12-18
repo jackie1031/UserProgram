@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.*; 
+import java.util.*; 
 
 /* Each state object holds its state name
  * and a list of variables, which are
@@ -43,33 +45,65 @@ public class State {
         this.transitions.put(input, destination);
     }
     
-    public void printState(PrintWriter p) {
-        for (String input : this.transitions.keySet()) {
-            State destState = this.transitions.get(input);
+    public void printState(PrintWriter p, int flag) {
+        // Set<String> list = this.transitions.keySet();
+        // Iterator<String> iterator = list.iterator();
 
-            // Print CURR : DEST
+        // while (iterator.hasNext()) {
+        //     String name = iterator.next();
+        //     State destState = this.transitions.get(name);
+        //     p.print(this.stateName);
+        //     p.print(" : " + destState.getStateName() + " ");
+        //     p.print(" WHEN ");
+        //     if (iterator.hasNext()) {
+        //         p.println("(" + name + "," + "out1" + ")" + " COST 1" + ",");
+        //     } else {
+        //         p.println("(" + name + "," + "out1" + ")" + " COST 1");
+
+        //     }
+
+        // }
+
+        int i = 0;
+        // p.println("the size of keyset is: "+ this.transitions.keySet().size());
+
+        if (flag == 1) {
             p.print(this.stateName);
-            // for (int i = 0; i < arraySize; i++) {
-            //     p.print(this.arrayOfVariables[i].getVariableValue());
-            //     if (i < arraySize - 1) {
-            //         p.print(",");
-            //     }
-            // }
 
-            p.print(" : " + destState.getStateName() + " ");
-            // for (int i = 0; i < arraySize; i++) {
-            //     p.print(destState.arrayOfVariables[i].getVariableValue());
-            //     if (i < arraySize - 1) {
-            //         p.print(",");
-            //     }
-            // }
-            // p.print(")");
-            p.print(" WHEN ");
+            for (String input : this.transitions.keySet()) {
+                i += 1;
+                // p.println("i is " + i);
+                State destState = this.transitions.get(input);
+                p.print(" : " + destState.getStateName() + " ");
 
-            // Print the transition
-            // TODO: add output!!!
-            // TODO: add comma at the end!!
-            p.println("(" + input + "," + "out1" + ")" + " COST 1");
+                if (i != this.transitions.keySet().size()) {
+                    p.println("(" + input + "," + "out1" + ")" + " COST 1");
+
+                } else if (i == this.transitions.keySet().size()){
+                    p.println("(" + input + "," + "out1" + ")" + " COST 1" + ",");
+
+                }
+                // Print CURR : DEST
+                // p.print(this.stateName);
+                // p.print(" : " + destState.getStateName() + " ");
+                // p.print(" WHEN ");
+
+            }        
+        } else {
+            p.print(this.stateName);
+
+            for (String input : this.transitions.keySet()) {
+                i += 1;
+                // p.println("i is " + i);
+                State destState = this.transitions.get(input);
+                p.print(" : " + destState.getStateName() + " ");
+
+                p.println("(" + input + "," + "out1" + ")" + " COST 1");
+
+            }
         }
+
     }
+
+
 }

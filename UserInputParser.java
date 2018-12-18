@@ -93,9 +93,18 @@ public class UserInputParser {
     	p.println(";");
  
  		// TRANSITIONS
- 		p.print("TRANSITIONS ");
+ 		p.print("TRANSITIONS ");  
+        int numOfStates = 0; 
+
  		for (State s : listOfStates) {
- 			s.printState(p);
+            numOfStates += 1;
+            if (numOfStates != listOfStates.size()) {
+                s.printState(p,1);
+
+            } else {
+                s.printState(p,0);
+
+            }
     	}
 
     	// CLOSE FILE
