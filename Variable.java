@@ -1,5 +1,7 @@
 package UserProgram;
 
+import java.io.PrintWriter;
+
 public class Variable {
 
     private final String variableName;
@@ -10,8 +12,16 @@ public class Variable {
     	this.variableValue = value;
     }
 
-    public void printVariable() {
-    	System.out.println("variableName: " + this.variableName + ", variableValue: " + variableValue);
+    public String getVariableName() {
+    	return this.variableName;
+    }
+
+    public int getVariableValue() {
+    	return this.variableValue;
+    }
+
+    public void printVariable(PrintWriter p) {
+    	p.println("    variableName: " + this.variableName + ", variableValue: " + variableValue);
     }
     
 }
