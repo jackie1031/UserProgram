@@ -1,0 +1,11 @@
+INPUTS x, y, z;
+OUTPUTS out1, out2, out3;
+INITIAL_STATE s1;
+OTHER_STATES s2, s3, s4;
+TRANSITIONS s1 : s3 WHEN (y,out2) COST 1
+ : s2 WHEN (x,out1) COST 1,
+s2 : s3 WHEN (y,out2) COST 1
+ : s4 WHEN (x,out1) COST 1,
+s3 : s1 WHEN (z,out3) COST 1,
+s4 : s1 WHEN (z,out3) COST 1
+EOF

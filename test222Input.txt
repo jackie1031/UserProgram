@@ -1,0 +1,130 @@
+======== Input File name ========
+what's the output file name?
+test222.txt
+========Now asking for information on variables========
+How many variables are in each state?
+3
+Please enter the name of variable #1:
+a
+Please enter the name of variable #2:
+b
+Please enter the name of variable #3:
+c
+========Now asking for information on states and transitions========
+(Please notice that state #1 is the initial state)
+Please enter the name of state #1:
+s1
+Please enter initial value for variable a in state s1:
+0
+Please enter initial value for variable b in state s1:
+0
+Please enter initial value for variable c in state s1:
+0
+encodeToString::stateName: s1 encodedValue: a0b0c0
+Please enter input name for transition #1 in state s1:
+x
+Please enter output name for transition #1 in state s1:
+out1
+Now asking for internal memory of destination state
+Please enter initial value for variable a in the destination state:
+0
+Please enter initial value for variable b in the destination state:
+0
+Please enter initial value for variable c in the destination state:
+1
+encodeArrayToString::encodedValue: a0b0c1
+Destination state does not exist, creating a new state object
+Please enter destination state name for such transition #1: <x/out1> in state encoded as: a0b0c1
+s2
+encodeToString::stateName: s2 encodedValue: a0b0c1
+Transition <x/out1---> a0b0c1> added to states1
+Enter another transition for state s1? enter 1 for yes, enter 0 for no
+1
+Please enter input name for transition #2 in state s1:
+y
+Please enter output name for transition #2 in state s1:
+out2
+Now asking for internal memory of destination state
+Please enter initial value for variable a in the destination state:
+0
+Please enter initial value for variable b in the destination state:
+1
+Please enter initial value for variable c in the destination state:
+0
+encodeArrayToString::encodedValue: a0b1c0
+Destination state does not exist, creating a new state object
+Please enter destination state name for such transition #2: <y/out2> in state encoded as: a0b1c0
+s3
+encodeToString::stateName: s3 encodedValue: a0b1c0
+Transition <y/out2---> a0b1c0> added to states1
+Enter another transition for state s1? enter 1 for yes, enter 0 for no
+0
+Please enter input name for transition #1 in state s2:
+x
+Please enter output name for transition #1 in state s2:
+out1
+Now asking for internal memory of destination state
+Please enter initial value for variable a in the destination state:
+1
+Please enter initial value for variable b in the destination state:
+1
+Please enter initial value for variable c in the destination state:
+1
+encodeArrayToString::encodedValue: a1b1c1
+Destination state does not exist, creating a new state object
+Please enter destination state name for such transition #1: <x/out1> in state encoded as: a1b1c1
+s4
+encodeToString::stateName: s4 encodedValue: a1b1c1
+Transition <x/out1---> a1b1c1> added to states2
+Enter another transition for state s2? enter 1 for yes, enter 0 for no
+1
+Please enter input name for transition #2 in state s2:
+y
+Please enter output name for transition #2 in state s2:
+out2
+Now asking for internal memory of destination state
+Please enter initial value for variable a in the destination state:
+0
+Please enter initial value for variable b in the destination state:
+1
+Please enter initial value for variable c in the destination state:
+0
+encodeArrayToString::encodedValue: a0b1c0
+encodeToString::stateName: s3 encodedValue: a0b1c0
+Transition <y/out2---> a0b1c0> added to states2
+Enter another transition for state s2? enter 1 for yes, enter 0 for no
+0
+Please enter input name for transition #1 in state s3:
+z
+Please enter output name for transition #1 in state s3:
+out3
+Now asking for internal memory of destination state
+Please enter initial value for variable a in the destination state:
+0
+Please enter initial value for variable b in the destination state:
+0
+Please enter initial value for variable c in the destination state:
+0
+encodeArrayToString::encodedValue: a0b0c0
+encodeToString::stateName: s1 encodedValue: a0b0c0
+Transition <z/out3---> a0b0c0> added to states3
+Enter another transition for state s3? enter 1 for yes, enter 0 for no
+0
+Please enter input name for transition #1 in state s4:
+z
+Please enter output name for transition #1 in state s4:
+out3
+Now asking for internal memory of destination state
+Please enter initial value for variable a in the destination state:
+0
+Please enter initial value for variable b in the destination state:
+0
+Please enter initial value for variable c in the destination state:
+0
+encodeArrayToString::encodedValue: a0b0c0
+encodeToString::stateName: s1 encodedValue: a0b0c0
+Transition <z/out3---> a0b0c0> added to states4
+Enter another transition for state s4? enter 1 for yes, enter 0 for no
+0
+========Printing all the states========
+Suyis-MacBook-Pro-2:new suyiliu$ 
