@@ -1,7 +1,11 @@
 package UserProgram;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 /* The driver program interacts with user,
  * asking for inputs of #of variables in each state,
@@ -13,9 +17,12 @@ public class Driver {
 	private static int numVariablesInEachState;
 	private static String[] arrayOfVariableNames;
 	private static UserInputParser userInputParser;
+    private static Queue<State> q;
+    private static TreeSet<State> setOfUniqueStates;
 
     public static void main(String[] args) throws IOException {
     	userInputParser = new UserInputParser();
+        q = new LinkedList<State>();
         String outFileName = askOutFileName();
     	takeInput();
     	printInfo(outFileName) ;
@@ -55,66 +62,81 @@ public class Driver {
         System.out.println("========Now asking information on states========");
         System.out.println("(Please notice that state #1 is the initial state)");
 
-    	int stateIndex = 1;
+        // Get the info for the first state
+        // Get the state name for the first state
+        System.out.println("Please enter the name of state #1:");
+        String stateName = keyboard.nextLine();
+        State newState = new State(numVariablesInEachState, stateName);
+
+        // Get the initial values of variables in the first state
+        for (int i = 0; i < numVariablesInEachState; i++) {
+            System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + stateName + ":");
+            int initialValue = keyboard.nextInt();
+            Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
+            newState.addVariableToArray(newVariable);
+        }
+
+        // Add the first state to the queue and set
+        q.add(newState);
+        userInputParser.addStateToMap(stateName, newState);
+        userInputParser.addState(newState);
+
+    	int stateIndex = 2;
     	int answer = 1;
-    	do {
-    		System.out.println("Please enter the name of state #" + stateIndex + ":");
-    		String stateName = keyboard.nextLine();
-    		State newState = new State(numVariablesInEachState, stateName);
-            //userInputParser.getStateByName(stateName) : new State(numVariablesInEachState, stateName);
-
-    		// Get the initial values of each state
-  			for (int i = 0; i < numVariablesInEachState; i++) {
-    			System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + stateName + ":");
-    			int initialValue = keyboard.nextInt();
-    			Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
-    			newState.addVariableToArray(newVariable);
-    		}
-
-            // Add the state to the map
-    		userInputParser.addState(newState);
-            userInputParser.addStateToMap(stateName, newState);
-
-    		// Gives user a chance to stop adding new states
-    		System.out.println("Enter another state? enter 1 for yes, enter 0 for no");
-    		answer = keyboard.nextInt();
-    		keyboard.nextLine();
-            stateIndex++;
-    	} while (answer != 0);
-
-        System.out.println("========Now asking for all possible transitions========");
-        // Ask user to enter possible transitions from each state
-        int transitionIndex = 1;
-
-        // loop over queue
-        for (State state : userInputParser.getListOfStates()) {
-            transitionIndex = 1;
+        keyboard.nextLine();
+    	while (!q.isEmpty()) {
+            // Pop out the first state in the waiting queue
+            State currState = q.poll();
+            int transitionIndex = 1;
+            // Ask for transitions regarding the current state
             do {
                 // Get input
-                System.out.println("Please enter input name for transition #" + transitionIndex + " in state " + state.getStateName() + ":");
+                System.out.println("Please enter input name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String inputName = keyboard.nextLine();
                 // Get output
-                System.out.println("Please enter output name for transition #" + transitionIndex + " in state " + state.getStateName() + ":");
+                System.out.println("Please enter output name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String outputName = keyboard.nextLine();
                 // Get destination
-                System.out.println("Please enter destination state name for transition #" + transitionIndex + " in state " + state.getStateName() + ":");
+                System.out.println("Please enter destination state name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String destStateName = keyboard.nextLine();
                 State destState = userInputParser.getStateByName(destStateName);
+
+                // If we have not seen such destination state in the set
                 if (destState == null) {
-                    System.out.println("Destination state does not exist, transition <" + inputName + ", " + destStateName +"> not added");
-                } else {
-                    userInputParser.addInput(inputName);
-                    userInputParser.addOutput(outputName);
-                    state.addTransition(inputName, outputName, destState);
-                    System.out.println("Transition <" + inputName + "/" + outputName + ", " + destStateName +"> added to state" + state.getStateName());
+                    // Create such new state
+                    System.out.println("Destination state does not exist, creating a new state object");
+                    State newDestState = new State(numVariablesInEachState, destStateName);
+
+                    // Get the initial values of variables in the first state
+                    for (int i = 0; i < numVariablesInEachState; i++) {
+                        System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + destStateName + ":");
+                        int initialValue = keyboard.nextInt();
+                        Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
+                        newDestState.addVariableToArray(newVariable);
+                    }
+
+                    // Add it to the queue as well as the set
+                    q.add(newDestState);
+                    userInputParser.addStateToMap(destStateName, newDestState);
+                    userInputParser.addState(newDestState);
+
+                    // Assign destState again
+                    destState = newDestState;
                 }
 
-                System.out.println("Enter another transition for state " + state.getStateName() + "? enter 1 for yes, enter 0 for no");
+                // Adding transition
+                userInputParser.addInput(inputName);
+                userInputParser.addOutput(outputName);
+                currState.addTransition(inputName, outputName, destState);
+                System.out.println("Transition <" + inputName + "/" + outputName + ", " + destStateName +"> added to state" + currState.getStateName());
+
+                // Recursively ask for transitions
+                System.out.println("Enter another transition for state " + currState.getStateName() + "? enter 1 for yes, enter 0 for no");
                 answer = keyboard.nextInt();
                 keyboard.nextLine();
                 transitionIndex++;
             } while (answer != 0);
-        }
+    	}    
     }
 
     public static void printInfo(String outputFile) throws IOException {
