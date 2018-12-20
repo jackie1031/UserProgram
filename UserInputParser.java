@@ -53,9 +53,10 @@ public class UserInputParser {
 		return this.stateNameToState.get(stateName);
 	}
 
-    public void printListOfStates() throws IOException {
+    public void printListOfStates(String outFileName) throws IOException {
 
-    	PrintWriter p = new PrintWriter("output.txt");
+    	PrintWriter p = new PrintWriter(outFileName);
+
     	// INPUTS
     	p.print("INPUTS ");
     	for (String s : inputs) {
@@ -95,7 +96,6 @@ public class UserInputParser {
  		// TRANSITIONS
  		p.print("TRANSITIONS ");  
         int numOfStates = 0; 
-
  		for (State s : listOfStates) {
             numOfStates += 1;
             if (numOfStates != listOfStates.size()) {

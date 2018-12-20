@@ -16,8 +16,17 @@ public class Driver {
 
     public static void main(String[] args) throws IOException {
     	userInputParser = new UserInputParser();
+        String outFileName = askOutFileName();
     	takeInput();
-    	printInfo();
+    	printInfo(outFileName) ;
+    }
+
+    public static String askOutFileName() {
+        System.out.println("======== Input File name ========");
+        System.out.println("what's the output file name?");
+        String outFileName = keyboard.nextLine();
+        return outFileName;
+
     }
 
     /* Step 1: ask user how many variables are in each state
@@ -26,6 +35,10 @@ public class Driver {
      * 		   values of variables that the state contains
  	 */
     public static void takeInput() {
+
+        //ask user to put in the output.txt file name.
+
+
     	// ask user how many variables are in each state
         System.out.println("========Now asking information on variables========");
     	System.out.println("How many variables are in each state?");
@@ -72,6 +85,8 @@ public class Driver {
         System.out.println("========Now asking for all possible transitions========");
         // Ask user to enter possible transitions from each state
         int transitionIndex = 1;
+
+        // loop over queue
         for (State state : userInputParser.getListOfStates()) {
             transitionIndex = 1;
             do {
@@ -102,9 +117,9 @@ public class Driver {
         }
     }
 
-    public static void printInfo() throws IOException {
+    public static void printInfo(String outputFile) throws IOException {
     	System.out.println("========Printing all the states========");
-    	userInputParser.printListOfStates();
+    	userInputParser.printListOfStates(outputFile);
     }
     
 }
