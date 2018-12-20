@@ -17,26 +17,22 @@ public class State {
     public Variable[] arrayOfVariables;
     private int currArrayIndex;
     private int arraySize;
-    private HashMap<String, State> transitions;
-
-    // private HashMap<Entry<String, String>, State> transitions;
-    // private Entry<String, String> inOutPair;
+    //private HashMap<String, State> transitions;
 
 // Map<String, Entry<Action, Boolean>> actionMap = new HashMap<String, Entry<Action, Boolean>>();
 
-// actionMap.put("action_name", new SimpleEntry(action, true));
+    private HashMap<Map.Entry<String, String>, State> transitions;
+    // private Entry<String, String> inOutPair;
 
-// Entry<Action, Boolean> actionMapEntry = actionMap.get("action_name");
 
-// if(actionMapEntry.value()) actionMapEntry.key().applyAction();
 
     public State(int arrayLength, String name) {
     	this.stateName = name;
     	this.arrayOfVariables = new Variable[arrayLength];
     	this.arraySize = arrayLength;
     	this.currArrayIndex = 0;
-        this.transitions = new HashMap< String, State>();
-        //this.transitions = new HashMap<Entry<String, String>, State>();
+        //this.transitions = new HashMap< String, State>();
+        this.transitions = new HashMap<Map.Entry<String, String>, State>();
     }
 
     public String getStateName() {
@@ -52,14 +48,23 @@ public class State {
     	currArrayIndex++;
     }
 
-    public void addTransition(String input, State destination) {
-        this.transitions.put(input, destination);
+    public void addTransition(String input, String output, State destination) {
+        // this.transitions.put(input, destination);
+        //Entry<String, String> actionMapEntry = actionMap.get("action_name");
+        Map.Entry<String,String> entry = new AbstractMap.SimpleEntry<String, String>(input,output);
+        this.transitions.put(entry,destination);
+        
     }
-
-    // public void addTransition(Entry<String, String> input, State destination) {
-    //     this.transitions.put(input, destination);
-    // }
     
+    // Map<String, Entry<Action, Boolean>> actionMap = new HashMap<String, Entry<Action, Boolean>>();
+
+// actionMap.put("action_name", new SimpleEntry(action, true));
+
+// Entry<Action, Boolean> actionMapEntry = actionMap.get("action_name");
+
+// if(actionMapEntry.value()) actionMapEntry.key().applyAction();
+
+
     public void printState(PrintWriter p, int flag) {
 
         int i = 0;
@@ -68,17 +73,22 @@ public class State {
         if (flag == 1) {
             p.print(this.stateName);
 
-            for (String input : this.transitions.keySet()) {
+            //for (String input : this.transitions.keySet().getKey()) {
+            for (Map.Entry<String,String> oneTrans : this.transitions.keySet()) {
+
+                String input = oneTrans.getKey();
+                String output = oneTrans.getValue();
+
                 i += 1;
                 // p.println("i is " + i);
-                State destState = this.transitions.get(input);
+                State destState = this.transitions.get(oneTrans);
                 p.print(" : " + destState.getStateName() + " ");
 
                 if (i != this.transitions.keySet().size()) {
-                    p.println("WHEN (" + input + "," + "out1" + ")" + " COST 1");
+                    p.println("WHEN (" + input + "," + output + ")" + " COST 1");
 
                 } else if (i == this.transitions.keySet().size()){
-                    p.println("WHEN (" + input + "," + "out1" + ")" + " COST 1" + ",");
+                    p.println("WHEN (" + input + "," + output + ")" + " COST 1" + ",");
 
                 }
 
@@ -86,13 +96,16 @@ public class State {
         } else {
             p.print(this.stateName);
 
-            for (String input : this.transitions.keySet()) {
+            // for (String input : this.transitions.keySet()) {
+            for (Map.Entry<String,String> oneTrans : this.transitions.keySet()) {
+                String input = oneTrans.getKey();
+                String output = oneTrans.getValue();
                 i += 1;
                 // p.println("i is " + i);
-                State destState = this.transitions.get(input);
+                State destState = this.transitions.get(oneTrans);
                 p.print(" : " + destState.getStateName() + " ");
 
-                p.println("WHEN (" + input + "," + "out1" + ")" + " COST 1");
+                p.println("WHEN (" + input + "," + output + ")" + " COST 1");
 
             }
         }

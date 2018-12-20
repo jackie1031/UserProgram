@@ -105,7 +105,7 @@ public class Driver {
                 } else {
                     userInputParser.addInput(inputName);
                     userInputParser.addOutput(outputName);
-                    state.addTransition(inputName, destState);
+                    state.addTransition(inputName, outputName, destState);
                     System.out.println("Transition <" + inputName + "/" + outputName + ", " + destStateName +"> added to state" + state.getStateName());
                 }
 
