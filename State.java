@@ -48,6 +48,10 @@ public class State {
     	currArrayIndex++;
     }
 
+    public void setArrayOfVariables(Variable[] newArrayOfVariables) {
+        this.arrayOfVariables = newArrayOfVariables;
+    }
+
     public void addTransition(String input, String output, State destination) {
         // this.transitions.put(input, destination);
         //Entry<String, String> actionMapEntry = actionMap.get("action_name");
@@ -55,15 +59,6 @@ public class State {
         this.transitions.put(entry,destination);
         
     }
-    
-    // Map<String, Entry<Action, Boolean>> actionMap = new HashMap<String, Entry<Action, Boolean>>();
-
-// actionMap.put("action_name", new SimpleEntry(action, true));
-
-// Entry<Action, Boolean> actionMapEntry = actionMap.get("action_name");
-
-// if(actionMapEntry.value()) actionMapEntry.key().applyAction();
-
 
     public void printState(PrintWriter p, int flag) {
 
@@ -112,5 +107,22 @@ public class State {
 
     }
 
+    public String encodeToString() {
+        String s = "";
+        for (int i = 0; i < arraySize; i++) {
+            s = s + arrayOfVariables[i].getVariableName() + arrayOfVariables[i].getVariableValue();
+        }
+        System.out.println("encodeToString::stateName: " + stateName + " encodedValue: " + s);
+        return s;
+    }
+
+    public static String encodeArrayToString(Variable[] arrayOfVariables, int arraySize) {
+        String s = "";
+        for (int i = 0; i < arraySize; i++) {
+            s = s + arrayOfVariables[i].getVariableName() + arrayOfVariables[i].getVariableValue();
+        }
+        System.out.println("encodeArrayToString::encodedValue: " + s);
+        return s;
+    }
 
 }

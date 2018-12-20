@@ -84,7 +84,7 @@ public class Driver {
 
         // Add the first state to the queue and set
         q.add(newState);
-        userInputParser.addStateToMap(stateName, newState);
+        userInputParser.addStateToMap(newState.encodeToString(), newState);
         userInputParser.addState(newState);
 
     	int stateIndex = 2;
@@ -104,28 +104,38 @@ public class Driver {
                 // Get output
                 System.out.println("Please enter output name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String outputName = keyboard.nextLine();
+
+                // Get encoded destination
+                System.out.println("Now asking for internal memory of destination state");
+                Variable[] newArrayOfVariables = new Variable[numVariablesInEachState];
+                for (int i = 0; i < numVariablesInEachState; i++) {
+                    System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in the destination state:");
+                    int initialValue = keyboard.nextInt();
+                    Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
+                    newArrayOfVariables[i] = newVariable;
+                }
+
+                String encodedDest = State.encodeArrayToString(newArrayOfVariables, numVariablesInEachState);
+                keyboard.nextLine();
+
                 // Get destination
-                System.out.println("Please enter destination state name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
-                String destStateName = keyboard.nextLine();
-                State destState = userInputParser.getStateByName(destStateName);
+                State destState = userInputParser.getStateByName(encodedDest);
 
                 // If we have not seen such destination state in the set
                 if (destState == null) {
                     // Create such new state
                     System.out.println("Destination state does not exist, creating a new state object");
+                    // Get the state name
+                    System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                    String destStateName = keyboard.nextLine();
                     State newDestState = new State(numVariablesInEachState, destStateName);
 
-                    // Get the initial values of variables in the first state
-                    for (int i = 0; i < numVariablesInEachState; i++) {
-                        System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + destStateName + ":");
-                        int initialValue = keyboard.nextInt();
-                        Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
-                        newDestState.addVariableToArray(newVariable);
-                    }
+                    // Assign the array to the destination state
+                    newDestState.setArrayOfVariables(newArrayOfVariables);
 
                     // Add it to the queue as well as the set
                     q.add(newDestState);
-                    userInputParser.addStateToMap(destStateName, newDestState);
+                    userInputParser.addStateToMap(encodedDest, newDestState);
                     userInputParser.addState(newDestState);
 
                     // Assign destState again
@@ -136,7 +146,7 @@ public class Driver {
                 userInputParser.addInput(inputName);
                 userInputParser.addOutput(outputName);
                 currState.addTransition(inputName, outputName, destState);
-                System.out.println("Transition <" + inputName + "/" + outputName + ", " + destStateName +"> added to state" + currState.getStateName());
+                System.out.println("Transition <" + inputName + "/" + outputName + "---> " + destState.encodeToString() +"> added to state" + currState.getStateName());
 
                 // Recursively ask for transitions
                 System.out.println("Enter another transition for state " + currState.getStateName() + "? enter 1 for yes, enter 0 for no");
