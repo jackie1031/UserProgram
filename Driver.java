@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
 
 /* The driver program interacts with user,
  * asking for inputs of #of variables in each state,
- * names and initial values.
+ * names and initial values as well as all possible transitions
  */
 public class Driver {
 
@@ -18,7 +16,6 @@ public class Driver {
 	private static String[] arrayOfVariableNames;
 	private static UserInputParser userInputParser;
     private static Queue<State> q;
-    private static TreeSet<State> setOfUniqueStates;
 
     public static void main(String[] args) throws IOException {
     	userInputParser = new UserInputParser();
@@ -33,21 +30,29 @@ public class Driver {
         System.out.println("what's the output file name?");
         String outFileName = keyboard.nextLine();
         return outFileName;
-
     }
 
-    /* Step 1: ask user how many variables are in each state
-     * Step 2: ask user to input each name of the variable
-     * Step 3: looping to ask user input state names and 
+    /* For each state:
+     *  Step 1: ask user how many variables are in each state
+     *  Step 2: ask user to input each name of the variable
+     *  Step 3: looping to ask user input state names and 
      * 		   values of variables that the state contains
+     *
+     * First ask user information of the first state and add the first state to the queue
+     * Then recursively pop out the head of the queue, asking for details of the transitions
+     * for the state:
+     *  1: input/output pair of each transition
+     *  2: destnation state of each correcponding transition
+     *      a. if the destnation state does not exist, create one (ask info for the state in
+     *         the order of Step1 - Step3) and add it to the queue + unique set of states.
+     *         then add the transition between current state and destination state
+     *      b. if the destnation state already exists in the unique set of states, just add
+     *         the transition between current state and destination state 
  	 */
     public static void takeInput() {
 
-        //ask user to put in the output.txt file name.
-
-
     	// ask user how many variables are in each state
-        System.out.println("========Now asking information on variables========");
+        System.out.println("========Now asking for information on variables========");
     	System.out.println("How many variables are in each state?");
     	numVariablesInEachState = keyboard.nextInt();
     	keyboard.nextLine();
@@ -59,10 +64,11 @@ public class Driver {
     		arrayOfVariableNames[i] = keyboard.nextLine();
     	}
 
-        System.out.println("========Now asking information on states========");
+        // ask for information on states and transitions
+        System.out.println("========Now asking for information on states and transitions========");
         System.out.println("(Please notice that state #1 is the initial state)");
-
-        // Get the info for the first state
+        
+        /* Get the info for the first state */
         // Get the state name for the first state
         System.out.println("Please enter the name of state #1:");
         String stateName = keyboard.nextLine();
@@ -84,6 +90,8 @@ public class Driver {
     	int stateIndex = 2;
     	int answer = 1;
         keyboard.nextLine();
+
+        // Main loop
     	while (!q.isEmpty()) {
             // Pop out the first state in the waiting queue
             State currState = q.poll();
