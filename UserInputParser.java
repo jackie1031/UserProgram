@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.*;
 
 
 /* States with initial values are stored in a list
@@ -44,6 +45,18 @@ public class UserInputParser {
 	public List<State> getListOfStates() {
 		return this.listOfStates;
 	}
+
+    public Set<String> getListOfAllStateName() {
+        Set<String> allNames = new HashSet<String>(); 
+
+        for (int i = 0; i < listOfStates.size(); i++) {
+            allNames.add(listOfStates.get(i).getStateName());
+            // System.out.println(listOfStates.get(i));
+        }
+
+        return allNames;
+
+    }
 
 	public void addStateToMap(String stateName, State state) {
 		this.stateNameToState.put(stateName, state);

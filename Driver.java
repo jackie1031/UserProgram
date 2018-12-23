@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.*; 
+
 
 /* The driver program interacts with user,
  * asking for inputs of #of variables in each state,
@@ -121,6 +123,10 @@ public class Driver {
                 // Get destination
                 State destState = userInputParser.getStateByName(encodedDest);
 
+
+                // if input & destination state the same?
+
+
                 // If we have not seen such destination state in the set
                 if (destState == null) {
                     // Create such new state
@@ -128,6 +134,14 @@ public class Driver {
                     // Get the state name
                     System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                     String destStateName = keyboard.nextLine();
+                    // check duplicate state name!!
+                    Set<String> allStateNames = userInputParser.getListOfAllStateName();
+                    while(allStateNames.contains(destStateName)) {
+                        System.out.println("Warning!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                        destStateName = keyboard.nextLine();
+
+                    }
+
                     State newDestState = new State(numVariablesInEachState, destStateName);
 
                     // Assign the array to the destination state

@@ -53,8 +53,6 @@ public class State {
     }
 
     public void addTransition(String input, String output, State destination) {
-        // this.transitions.put(input, destination);
-        //Entry<String, String> actionMapEntry = actionMap.get("action_name");
         Map.Entry<String,String> entry = new AbstractMap.SimpleEntry<String, String>(input,output);
         this.transitions.put(entry,destination);
         
