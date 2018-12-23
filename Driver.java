@@ -103,6 +103,15 @@ public class Driver {
                 // Get input
                 System.out.println("Please enter input name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String inputName = keyboard.nextLine();
+
+                // Check duplicate inputs
+                Set<String> allInput = currState.getAllInputNames();
+
+                while (allInput.contains(inputName)) {
+                    System.out.println("!!!Warning!!! duplicate input, enter new input name");
+                    inputName = keyboard.nextLine();
+                }
+                
                 // Get output
                 System.out.println("Please enter output name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String outputName = keyboard.nextLine();
@@ -134,10 +143,11 @@ public class Driver {
                     // Get the state name
                     System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                     String destStateName = keyboard.nextLine();
+                    
                     // check duplicate state name!!
                     Set<String> allStateNames = userInputParser.getListOfAllStateName();
                     while(allStateNames.contains(destStateName)) {
-                        System.out.println("Warning!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                        System.out.println("!!!Warning!!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                         destStateName = keyboard.nextLine();
 
                     }

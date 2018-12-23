@@ -17,14 +17,8 @@ public class State {
     public Variable[] arrayOfVariables;
     private int currArrayIndex;
     private int arraySize;
-    //private HashMap<String, State> transitions;
-
-// Map<String, Entry<Action, Boolean>> actionMap = new HashMap<String, Entry<Action, Boolean>>();
-
     private HashMap<Map.Entry<String, String>, State> transitions;
     // private Entry<String, String> inOutPair;
-
-
 
     public State(int arrayLength, String name) {
     	this.stateName = name;
@@ -38,6 +32,19 @@ public class State {
     public String getStateName() {
         return this.stateName;
     }
+
+    public Set<String> getAllInputNames() {
+        Set<String> allNames = new HashSet<String>(); 
+
+        for (Map.Entry<String, String> oneTrans : transitions.keySet()) {
+             String input = oneTrans.getKey();
+            allNames.add(input);
+        }
+
+        return allNames;
+
+    }
+
 
     public void addVariableToArray(Variable variable) {
     	if (currArrayIndex >= arraySize) {
