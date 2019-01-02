@@ -53,18 +53,57 @@ public class Driver {
  	 */
     public static void takeInput() {
 
-    	// ask user how many variables are in each state
+        System.out.println("========Ask whether a fully specified FSM========");
+        System.out.println("Is this a fully specified FSM? (y/n)");
+        String response = keyboard.nextLine();
+        System.out.println("the response is: "+ response);
+
+        if (response.equals("y")) {
+            System.out.println(" this is a fully specified FSM");
+            fullySpecifiedFSM();
+
+        } else {
+            System.out.println(" this is NOT a fully specified FSM");
+            notFullyFSM();
+
+        }
+   
+    }
+
+    private static void fullySpecifiedFSM (){
+        // ask user how many variables are in each state
         System.out.println("========Now asking for information on variables========");
-    	System.out.println("How many variables are in each state?");
-    	numVariablesInEachState = keyboard.nextInt();
-    	keyboard.nextLine();
-    	arrayOfVariableNames = new String[numVariablesInEachState];
-    	
-    	// ask user to input names of variables one by one
-    	for (int i = 0; i < numVariablesInEachState; i++) {
-    		System.out.println("Please enter the name of variable #" + (i+1) + ":");
-    		arrayOfVariableNames[i] = keyboard.nextLine();
-    	}
+        System.out.println("How many variables are in each state?");
+        numVariablesInEachState = keyboard.nextInt();
+        keyboard.nextLine();
+        arrayOfVariableNames = new String[numVariablesInEachState];
+        
+        // ask user to input names of variables one by one
+        for (int i = 0; i < numVariablesInEachState; i++) {
+            System.out.println("Please enter the name of variable #" + (i+1) + ":");
+            arrayOfVariableNames[i] = keyboard.nextLine();
+        }
+
+        System.out.println("========Now asking for inputs ========");
+        System.out.println("How many inputs are there?");
+
+        // ask for inputs names and possible input values ??
+
+    }
+
+    private static void notFullyFSM (){
+        // ask user how many variables are in each state
+        System.out.println("========Now asking for information on variables========");
+        System.out.println("How many variables are in each state?");
+        numVariablesInEachState = keyboard.nextInt();
+        keyboard.nextLine();
+        arrayOfVariableNames = new String[numVariablesInEachState];
+        
+        // ask user to input names of variables one by one
+        for (int i = 0; i < numVariablesInEachState; i++) {
+            System.out.println("Please enter the name of variable #" + (i+1) + ":");
+            arrayOfVariableNames[i] = keyboard.nextLine();
+        }
 
         // ask for information on states and transitions
         System.out.println("========Now asking for information on states and transitions========");
@@ -89,12 +128,12 @@ public class Driver {
         userInputParser.addStateToMap(newState.encodeToString(), newState);
         userInputParser.addState(newState);
 
-    	int stateIndex = 2;
-    	int answer = 1;
+        int stateIndex = 2;
+        int answer = 1;
         keyboard.nextLine();
 
         // Main loop
-    	while (!q.isEmpty()) {
+        while (!q.isEmpty()) {
             // Pop out the first state in the waiting queue
             State currState = q.poll();
             int transitionIndex = 1;
@@ -107,6 +146,7 @@ public class Driver {
                 // Check duplicate inputs
                 Set<String> allInput = currState.getAllInputNames();
 
+                // while (currState.transitions.KeysSet().getkey().contains(inputName)) {
                 while (allInput.contains(inputName)) {
                     System.out.println("!!!Warning!!! duplicate input, enter new input name");
                     inputName = keyboard.nextLine();
@@ -178,9 +218,8 @@ public class Driver {
                 keyboard.nextLine();
                 transitionIndex++;
             } while (answer != 0);
-    	}    
+        }    
     }
-
     public static void printInfo(String outputFile) throws IOException {
     	System.out.println("========Printing all the states========");
     	userInputParser.printListOfStates(outputFile);
