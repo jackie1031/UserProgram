@@ -146,8 +146,8 @@ public class Driver {
                 // No need to check duplicate inputs here
                 
                 // Get output
-                System.out.println("Please enter output name for transition #" + (transitionIndex+1) + " in state " + currState.getStateName() 
-                    + ", corresponding to input " + arrayOfInputs[transitionIndex] + ":");
+                System.out.println("Given input " + arrayOfInputs[transitionIndex] +", please enter its output name for transition #" + (transitionIndex+1) + " in state " + currState.getStateName() 
+                    +  ":");
                 String outputName = keyboard.nextLine();
 
                 // Get encoded destination
