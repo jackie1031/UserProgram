@@ -136,12 +136,12 @@ public class Driver {
                 String inputName = arrayOfInputs[transitionIndex];
 
                 // Skip this transition if such transition does not exist
-                System.out.println("Does such transition corresponding to input " + arrayOfInputs[transitionIndex] + " exist for state " + currState.getStateName() + "? enter 1 for yes, enter 0 for no");
-                answer = keyboard.nextInt();
-                keyboard.nextLine();
-                if (answer == 0) {
-                    continue;
-                }
+                // System.out.println("Does such transition corresponding to input " + arrayOfInputs[transitionIndex] + " exist for state " + currState.getStateName() + "? enter 1 for yes, enter 0 for no");
+                // answer = keyboard.nextInt();
+                // keyboard.nextLine();
+                // if (answer == 0) {
+                //     continue;
+                // }
 
                 // No need to check duplicate inputs here
                 
