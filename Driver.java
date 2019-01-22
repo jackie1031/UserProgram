@@ -2,6 +2,9 @@ package UserProgram;
 
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -20,9 +23,20 @@ public class Driver {
 	private static UserInputParser userInputParser;
     private static Queue<State> q;
     private static PrintWriter log;
+    private static boolean isReadingFromLog;
 
-    public static void main(String[] args) throws IOException {
-        log = new PrintWriter("InputLog.txt");
+    public static void main(String[] args) throws IOException, FileNotFoundException {
+        System.out.println("Loading previous inputs from the log? enter 1 for yes, enter 0 for no");
+        int answer = keyboard.nextInt();
+        keyboard.nextLine();
+        if (answer == 1) {
+            keyboard = new Scanner(new File("InputLog.txt"));
+            isReadingFromLog = true;
+            log = new PrintWriter(new FileWriter("InputLog.txt", true));
+        } else {
+            isReadingFromLog = false;
+            log = new PrintWriter("InputLog.txt");
+        }
     	userInputParser = new UserInputParser();
         q = new LinkedList<State>();
         String outFileName = askOutFileName();
@@ -30,10 +44,22 @@ public class Driver {
     	printInfo(outFileName) ;
     }
 
-    public static String askOutFileName() {
+    public static String askOutFileName() throws FileNotFoundException {
         System.out.println("======== Input File name ========");
         System.out.println("what's the output file name?");
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         String outFileName = keyboard.nextLine();
+        if (!isReadingFromLog) {
+            log.println(outFileName);
+        } else {
+            System.out.println("Loaded answer:" + outFileName);
+        }
         return outFileName;
     }
 
@@ -58,8 +84,22 @@ public class Driver {
 
         System.out.println("========Ask whether a fully specified FSM========");
         System.out.println("Is this a fully specified FSM? (y/n)");
+
+
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         String response = keyboard.nextLine();
-        log.println(response);
+        if (!isReadingFromLog) {
+            log.println(response);
+        } else {
+            System.out.println("Loaded answer:" + response);
+        }
+
         System.out.println("the response is: "+ response);
 
         if (response.equals("y")) {
@@ -86,31 +126,84 @@ public class Driver {
         // ask user how many variables are in each state
         System.out.println("========Now asking for information on variables========");
         System.out.println("How many variables are in each state?");
+
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         numVariablesInEachState = keyboard.nextInt();
-        log.println(numVariablesInEachState);
         keyboard.nextLine();
+        if (!isReadingFromLog) {
+            log.println(numVariablesInEachState);
+        } else {
+            System.out.println("Loaded answer:" + numVariablesInEachState);
+        }
+
         arrayOfVariableNames = new String[numVariablesInEachState];
         
         // ask user to input names of variables one by one
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter the name of variable #" + (i+1) + ":");
+
+
+            // Switch scanner if the log reaches its end.
+            if (isReadingFromLog && !keyboard.hasNextLine()) {
+                log.println();
+                keyboard = new Scanner(System.in);
+                System.out.println("Log file reaches the end, please input the answer to the previous question");
+                isReadingFromLog = false;
+            }
             arrayOfVariableNames[i] = keyboard.nextLine();
-            log.println(arrayOfVariableNames[i]);
+            if (!isReadingFromLog) {
+                log.println(arrayOfVariableNames[i]);
+            } else {
+                System.out.println("Loaded answer:" + arrayOfVariableNames[i]);
+            }
+
         }
 
         // ask user how many inputs are there
         System.out.println("========Now asking for inputs ========");
         System.out.println("How many inputs are there?");
+
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         int numInputs = keyboard.nextInt();
-        log.println(numInputs);
         keyboard.nextLine();
+        if (!isReadingFromLog) {
+            log.println(numInputs);
+        } else {
+            System.out.println("Loaded answer:" + numInputs);
+        }
+
         String[] arrayOfInputs = new String[numInputs];
 
         // ask for inputs names and possible input values
         for (int i = 0; i < numInputs; i++) {
             System.out.println("Please enter the value of input #" + (i+1) + ":");
+
+            // Switch scanner if the log reaches its end.
+            if (isReadingFromLog && !keyboard.hasNextLine()) {
+                log.println();
+                keyboard = new Scanner(System.in);
+                System.out.println("Log file reaches the end, please input the answer to the previous question");
+                isReadingFromLog = false;
+            }
             arrayOfInputs[i] = keyboard.nextLine();
-            log.println(arrayOfInputs[i]);
+            if (!isReadingFromLog) {
+                log.println(arrayOfInputs[i]);
+            } else {
+                System.out.println("Loaded answer:" + arrayOfInputs[i]);
+            }
+
         }
 
         // ask for information on states and transitions
@@ -120,15 +213,42 @@ public class Driver {
         /* Get the info for the first state */
         // Get the state name for the first state
         System.out.println("Please enter the name of state #1:");
+
+
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         String stateName = keyboard.nextLine();
-        log.println(stateName);
+        if (!isReadingFromLog) {
+            log.println(stateName);
+        } else {
+            System.out.println("Loaded answer:" + stateName);
+        }
+
         State newState = new State(numVariablesInEachState, stateName);
 
         // Get the initial values of variables in the first state
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + stateName + ":");
+            
+            // Switch scanner if the log reaches its end.
+            if (isReadingFromLog && !keyboard.hasNextLine()) {
+                log.println();
+                keyboard = new Scanner(System.in);
+                System.out.println("Log file reaches the end, please input the answer to the previous question");
+                isReadingFromLog = false;
+            }
             int initialValue = keyboard.nextInt();
-            log.println(initialValue);
+            if (!isReadingFromLog) {
+                log.println(initialValue);
+            } else {
+                System.out.println("Loaded answer:" + initialValue);
+            }
+
             Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
             newState.addVariableToArray(newVariable);
         }
@@ -166,16 +286,41 @@ public class Driver {
                 // Get output
                 System.out.println("Given input " + arrayOfInputs[transitionIndex] +", please enter its output name for transition #" + (transitionIndex+1) + " in state " + currState.getStateName() 
                     +  ":");
+
+                // Switch scanner if the log reaches its end.
+                if (isReadingFromLog && !keyboard.hasNextLine()) {
+                    log.println();
+                    keyboard = new Scanner(System.in);
+                    System.out.println("Log file reaches the end, please input the answer to the previous question");
+                    isReadingFromLog = false;
+                }
                 String outputName = keyboard.nextLine();
-                log.println(outputName);
+                if (!isReadingFromLog) {
+                    log.println(outputName);
+                } else {
+                    System.out.println("Loaded answer:" + outputName);
+                }
 
                 // Get encoded destination
                 System.out.println("Now asking for internal memory of destination state");
                 Variable[] newArrayOfVariables = new Variable[numVariablesInEachState];
                 for (int i = 0; i < numVariablesInEachState; i++) {
                     System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in the destination state:");
+
+                    // Switch scanner if the log reaches its end.
+                    if (isReadingFromLog && !keyboard.hasNextLine()) {
+                        log.println();
+                        keyboard = new Scanner(System.in);
+                        System.out.println("Log file reaches the end, please input the answer to the previous question");
+                        isReadingFromLog = false;
+                    }
                     int initialValue = keyboard.nextInt();
-                    log.println(initialValue);
+                    if (!isReadingFromLog) {
+                        log.println(initialValue);
+                    } else {
+                        System.out.println("Loaded answer:" + initialValue);
+                    }
+
                     Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
                     newArrayOfVariables[i] = newVariable;
                 }
@@ -196,15 +341,40 @@ public class Driver {
                     System.out.println("Destination state does not exist, creating a new state object");
                     // Get the state name
                     System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                    
+                    // Switch scanner if the log reaches its end.
+                    if (isReadingFromLog && !keyboard.hasNextLine()) {
+                        log.println();
+                        keyboard = new Scanner(System.in);
+                        System.out.println("Log file reaches the end, please input the answer to the previous question");
+                        isReadingFromLog = false;
+                    }
                     String destStateName = keyboard.nextLine();
-                    log.println(destStateName);
+                    if (!isReadingFromLog) {
+                        log.println(destStateName);
+                    } else {
+                        System.out.println("Loaded answer:" + destStateName);
+                    }
                     
                     // check duplicate state name!!
                     Set<String> allStateNames = userInputParser.getListOfAllStateName();
                     while(allStateNames.contains(destStateName)) {
                         System.out.println("!!!Warning!!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                        
+                        // Switch scanner if the log reaches its end.
+                        if (isReadingFromLog && !keyboard.hasNextLine()) {
+                            log.println();
+                            keyboard = new Scanner(System.in);
+                            System.out.println("Log file reaches the end, please input the answer to the previous question");
+                            isReadingFromLog = false;
+                        }
                         destStateName = keyboard.nextLine();
-                        log.println(destStateName);
+                        if (!isReadingFromLog) {
+                            log.println(destStateName);
+                        } else {
+                            System.out.println("Loaded answer:" + destStateName);
+                        }
+
                     }
 
                     State newDestState = new State(numVariablesInEachState, destStateName);
@@ -234,16 +404,38 @@ public class Driver {
         // ask user how many variables are in each state
         System.out.println("========Now asking for information on variables========");
         System.out.println("How many variables are in each state?");
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         numVariablesInEachState = keyboard.nextInt();
-        log.println(numVariablesInEachState);
         keyboard.nextLine();
+        if (!isReadingFromLog) {
+            log.println(numVariablesInEachState);
+        } else {
+            System.out.println("Loaded answer:" + numVariablesInEachState);
+        }
         arrayOfVariableNames = new String[numVariablesInEachState];
         
         // ask user to input names of variables one by one
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter the name of variable #" + (i+1) + ":");
+            // Switch scanner if the log reaches its end.
+            if (isReadingFromLog && !keyboard.hasNextLine()) {
+                log.println();
+                keyboard = new Scanner(System.in);
+                System.out.println("Log file reaches the end, please input the answer to the previous question");
+                isReadingFromLog = false;
+            }
             arrayOfVariableNames[i] = keyboard.nextLine();
-            log.println(arrayOfVariableNames[i]);
+            if (!isReadingFromLog) {
+                log.println(arrayOfVariableNames[i]);
+            } else {
+                System.out.println("Loaded answer:" + arrayOfVariableNames[i]);
+            }
         }
 
         // ask for information on states and transitions
@@ -253,15 +445,37 @@ public class Driver {
         /* Get the info for the first state */
         // Get the state name for the first state
         System.out.println("Please enter the name of state #1:");
+        // Switch scanner if the log reaches its end.
+        if (isReadingFromLog && !keyboard.hasNextLine()) {
+            log.println();
+            keyboard = new Scanner(System.in);
+            System.out.println("Log file reaches the end, please input the answer to the previous question");
+            isReadingFromLog = false;
+        }
         String stateName = keyboard.nextLine();
-        log.println(stateName);
+        if (!isReadingFromLog) {
+            log.println(stateName);
+        } else {
+            System.out.println("Loaded answer:" + stateName);
+        }
         State newState = new State(numVariablesInEachState, stateName);
 
         // Get the initial values of variables in the first state
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + stateName + ":");
+            // Switch scanner if the log reaches its end.
+            if (isReadingFromLog && !keyboard.hasNextLine()) {
+                log.println();
+                keyboard = new Scanner(System.in);
+                System.out.println("Log file reaches the end, please input the answer to the previous question");
+                isReadingFromLog = false;
+            }
             int initialValue = keyboard.nextInt();
-            log.println(initialValue);
+            if (!isReadingFromLog) {
+                log.println(initialValue);
+            } else {
+                System.out.println("Loaded answer:" + initialValue);
+            }
             Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
             newState.addVariableToArray(newVariable);
         }
@@ -284,8 +498,20 @@ public class Driver {
             do {
                 // Get input
                 System.out.println("Please enter input name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
+                
+                // Switch scanner if the log reaches its end.
+                if (isReadingFromLog && !keyboard.hasNextLine()) {
+                    log.println();
+                    keyboard = new Scanner(System.in);
+                    System.out.println("Log file reaches the end, please input the answer to the previous question");
+                    isReadingFromLog = false;
+                }
                 String inputName = keyboard.nextLine();
-                log.println(inputName);
+                if (!isReadingFromLog) {
+                    log.println(inputName);
+                } else {
+                    System.out.println("Loaded answer:" + inputName);
+                }
 
                 // Check duplicate inputs
                 Set<String> allInput = currState.getAllInputNames();
@@ -293,22 +519,62 @@ public class Driver {
                 // while (currState.transitions.KeysSet().getkey().contains(inputName)) {
                 while (allInput.contains(inputName)) {
                     System.out.println("!!!Warning!!! duplicate input, enter new input name");
+
+                    // Switch scanner if the log reaches its end.
+                    if (isReadingFromLog && !keyboard.hasNextLine()) {
+                        log.println();
+                        keyboard = new Scanner(System.in);
+                        System.out.println("Log file reaches the end, please input the answer to the previous question");
+                        isReadingFromLog = false;
+                    }
                     inputName = keyboard.nextLine();
-                    log.println(inputName);
+                    if (!isReadingFromLog) {
+                        log.println(inputName);
+                    } else {
+                        System.out.println("Loaded answer:" + inputName);
+                    }
+
                 }
                 
                 // Get output
                 System.out.println("Please enter output name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
+                
+                // Switch scanner if the log reaches its end.
+                if (isReadingFromLog && !keyboard.hasNextLine()) {
+                    log.println();
+                    keyboard = new Scanner(System.in);
+                    System.out.println("Log file reaches the end, please input the answer to the previous question");
+                    isReadingFromLog = false;
+                }
                 String outputName = keyboard.nextLine();
-                log.println(outputName);
+                if (!isReadingFromLog) {
+                    log.println(outputName);
+                } else {
+                    System.out.println("Loaded answer:" + outputName);
+                }
+
 
                 // Get encoded destination
                 System.out.println("Now asking for internal memory of destination state");
                 Variable[] newArrayOfVariables = new Variable[numVariablesInEachState];
                 for (int i = 0; i < numVariablesInEachState; i++) {
                     System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in the destination state:");
+                    
+
+                    // Switch scanner if the log reaches its end.
+                    if (isReadingFromLog && !keyboard.hasNextLine()) {
+                        log.println();
+                        keyboard = new Scanner(System.in);
+                        System.out.println("Log file reaches the end, please input the answer to the previous question");
+                        isReadingFromLog = false;
+                    }
                     int initialValue = keyboard.nextInt();
-                    log.println(initialValue);
+                    if (!isReadingFromLog) {
+                        log.println(initialValue);
+                    } else {
+                        System.out.println("Loaded answer:" + initialValue);
+                    }
+
                     Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
                     newArrayOfVariables[i] = newVariable;
                 }
@@ -329,15 +595,40 @@ public class Driver {
                     System.out.println("Destination state does not exist, creating a new state object");
                     // Get the state name
                     System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                    
+                    // Switch scanner if the log reaches its end.
+                    if (isReadingFromLog && !keyboard.hasNextLine()) {
+                        log.println();
+                        keyboard = new Scanner(System.in);
+                        System.out.println("Log file reaches the end, please input the answer to the previous question");
+                        isReadingFromLog = false;
+                    }
                     String destStateName = keyboard.nextLine();
-                    log.println(destStateName);
+                    if (!isReadingFromLog) {
+                        log.println(destStateName);
+                    } else {
+                        System.out.println("Loaded answer:" + destStateName);
+                    }
+
                     
                     // check duplicate state name!!
                     Set<String> allStateNames = userInputParser.getListOfAllStateName();
                     while(allStateNames.contains(destStateName)) {
                         System.out.println("!!!Warning!!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
+                        
+                        // Switch scanner if the log reaches its end.
+                        if (isReadingFromLog && !keyboard.hasNextLine()) {
+                            log.println();
+                            keyboard = new Scanner(System.in);
+                            System.out.println("Log file reaches the end, please input the answer to the previous question");
+                            isReadingFromLog = false;
+                        }
                         destStateName = keyboard.nextLine();
-                        log.println(destStateName);
+                        if (!isReadingFromLog) {
+                            log.println(destStateName);
+                        } else {
+                            System.out.println("Loaded answer:" + destStateName);
+                        }
 
                     }
 
@@ -363,8 +654,22 @@ public class Driver {
 
                 // Recursively ask for transitions
                 System.out.println("Enter another transition for state " + currState.getStateName() + "? enter 1 for yes, enter 0 for no");
+                
+
+                // Switch scanner if the log reaches its end.
+                if (isReadingFromLog && !keyboard.hasNextLine()) {
+                    log.println();
+                    keyboard = new Scanner(System.in);
+                    System.out.println("Log file reaches the end, please input the answer to the previous question");
+                    isReadingFromLog = false;
+                }
                 answer = keyboard.nextInt();
-                log.println(answer);
+                if (!isReadingFromLog) {
+                    log.println(answer);
+                } else {
+                    System.out.println("Loaded answer:" + answer);
+                }
+
                 keyboard.nextLine();
                 transitionIndex++;
             } while (answer != 0);
