@@ -1,5 +1,6 @@
 package UserProgram;
 
+import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -18,8 +19,10 @@ public class Driver {
 	private static String[] arrayOfVariableNames;
 	private static UserInputParser userInputParser;
     private static Queue<State> q;
+    private static PrintWriter log;
 
     public static void main(String[] args) throws IOException {
+        log = new PrintWriter("InputLog.txt");
     	userInputParser = new UserInputParser();
         q = new LinkedList<State>();
         String outFileName = askOutFileName();
@@ -56,15 +59,24 @@ public class Driver {
         System.out.println("========Ask whether a fully specified FSM========");
         System.out.println("Is this a fully specified FSM? (y/n)");
         String response = keyboard.nextLine();
+        log.println(response);
         System.out.println("the response is: "+ response);
 
         if (response.equals("y")) {
             System.out.println(" this is a fully specified FSM");
-            fullySpecifiedFSM();
+            try {
+                fullySpecifiedFSM();
+            } catch (Exception e) {
+                log.close();
+            }
 
         } else {
             System.out.println(" this is NOT a fully specified FSM");
-            notFullyFSM();
+            try {
+                notFullyFSM();
+            } catch (Exception e) {
+                log.close();
+            }
 
         }
    
@@ -75,6 +87,7 @@ public class Driver {
         System.out.println("========Now asking for information on variables========");
         System.out.println("How many variables are in each state?");
         numVariablesInEachState = keyboard.nextInt();
+        log.println(numVariablesInEachState);
         keyboard.nextLine();
         arrayOfVariableNames = new String[numVariablesInEachState];
         
@@ -82,12 +95,14 @@ public class Driver {
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter the name of variable #" + (i+1) + ":");
             arrayOfVariableNames[i] = keyboard.nextLine();
+            log.println(arrayOfVariableNames[i]);
         }
 
         // ask user how many inputs are there
         System.out.println("========Now asking for inputs ========");
         System.out.println("How many inputs are there?");
         int numInputs = keyboard.nextInt();
+        log.println(numInputs);
         keyboard.nextLine();
         String[] arrayOfInputs = new String[numInputs];
 
@@ -95,6 +110,7 @@ public class Driver {
         for (int i = 0; i < numInputs; i++) {
             System.out.println("Please enter the value of input #" + (i+1) + ":");
             arrayOfInputs[i] = keyboard.nextLine();
+            log.println(arrayOfInputs[i]);
         }
 
         // ask for information on states and transitions
@@ -105,12 +121,14 @@ public class Driver {
         // Get the state name for the first state
         System.out.println("Please enter the name of state #1:");
         String stateName = keyboard.nextLine();
+        log.println(stateName);
         State newState = new State(numVariablesInEachState, stateName);
 
         // Get the initial values of variables in the first state
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + stateName + ":");
             int initialValue = keyboard.nextInt();
+            log.println(initialValue);
             Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
             newState.addVariableToArray(newVariable);
         }
@@ -149,6 +167,7 @@ public class Driver {
                 System.out.println("Given input " + arrayOfInputs[transitionIndex] +", please enter its output name for transition #" + (transitionIndex+1) + " in state " + currState.getStateName() 
                     +  ":");
                 String outputName = keyboard.nextLine();
+                log.println(outputName);
 
                 // Get encoded destination
                 System.out.println("Now asking for internal memory of destination state");
@@ -156,6 +175,7 @@ public class Driver {
                 for (int i = 0; i < numVariablesInEachState; i++) {
                     System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in the destination state:");
                     int initialValue = keyboard.nextInt();
+                    log.println(initialValue);
                     Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
                     newArrayOfVariables[i] = newVariable;
                 }
@@ -177,13 +197,14 @@ public class Driver {
                     // Get the state name
                     System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                     String destStateName = keyboard.nextLine();
+                    log.println(destStateName);
                     
                     // check duplicate state name!!
                     Set<String> allStateNames = userInputParser.getListOfAllStateName();
                     while(allStateNames.contains(destStateName)) {
                         System.out.println("!!!Warning!!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                         destStateName = keyboard.nextLine();
-
+                        log.println(destStateName);
                     }
 
                     State newDestState = new State(numVariablesInEachState, destStateName);
@@ -214,6 +235,7 @@ public class Driver {
         System.out.println("========Now asking for information on variables========");
         System.out.println("How many variables are in each state?");
         numVariablesInEachState = keyboard.nextInt();
+        log.println(numVariablesInEachState);
         keyboard.nextLine();
         arrayOfVariableNames = new String[numVariablesInEachState];
         
@@ -221,6 +243,7 @@ public class Driver {
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter the name of variable #" + (i+1) + ":");
             arrayOfVariableNames[i] = keyboard.nextLine();
+            log.println(arrayOfVariableNames[i]);
         }
 
         // ask for information on states and transitions
@@ -231,12 +254,14 @@ public class Driver {
         // Get the state name for the first state
         System.out.println("Please enter the name of state #1:");
         String stateName = keyboard.nextLine();
+        log.println(stateName);
         State newState = new State(numVariablesInEachState, stateName);
 
         // Get the initial values of variables in the first state
         for (int i = 0; i < numVariablesInEachState; i++) {
             System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in state " + stateName + ":");
             int initialValue = keyboard.nextInt();
+            log.println(initialValue);
             Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
             newState.addVariableToArray(newVariable);
         }
@@ -260,6 +285,7 @@ public class Driver {
                 // Get input
                 System.out.println("Please enter input name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String inputName = keyboard.nextLine();
+                log.println(inputName);
 
                 // Check duplicate inputs
                 Set<String> allInput = currState.getAllInputNames();
@@ -268,11 +294,13 @@ public class Driver {
                 while (allInput.contains(inputName)) {
                     System.out.println("!!!Warning!!! duplicate input, enter new input name");
                     inputName = keyboard.nextLine();
+                    log.println(inputName);
                 }
                 
                 // Get output
                 System.out.println("Please enter output name for transition #" + transitionIndex + " in state " + currState.getStateName() + ":");
                 String outputName = keyboard.nextLine();
+                log.println(outputName);
 
                 // Get encoded destination
                 System.out.println("Now asking for internal memory of destination state");
@@ -280,6 +308,7 @@ public class Driver {
                 for (int i = 0; i < numVariablesInEachState; i++) {
                     System.out.println("Please enter initial value for variable " + arrayOfVariableNames[i] + " in the destination state:");
                     int initialValue = keyboard.nextInt();
+                    log.println(initialValue);
                     Variable newVariable = new Variable(arrayOfVariableNames[i], initialValue);
                     newArrayOfVariables[i] = newVariable;
                 }
@@ -301,12 +330,14 @@ public class Driver {
                     // Get the state name
                     System.out.println("Please enter destination state name for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                     String destStateName = keyboard.nextLine();
+                    log.println(destStateName);
                     
                     // check duplicate state name!!
                     Set<String> allStateNames = userInputParser.getListOfAllStateName();
                     while(allStateNames.contains(destStateName)) {
                         System.out.println("!!!Warning!!! Duplicate state name, please enter again for such transition #" + transitionIndex + ": <" + inputName + "/" + outputName + "> in state encoded as: " + encodedDest);
                         destStateName = keyboard.nextLine();
+                        log.println(destStateName);
 
                     }
 
@@ -333,6 +364,7 @@ public class Driver {
                 // Recursively ask for transitions
                 System.out.println("Enter another transition for state " + currState.getStateName() + "? enter 1 for yes, enter 0 for no");
                 answer = keyboard.nextInt();
+                log.println(answer);
                 keyboard.nextLine();
                 transitionIndex++;
             } while (answer != 0);
